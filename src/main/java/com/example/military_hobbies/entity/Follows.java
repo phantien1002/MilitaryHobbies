@@ -2,6 +2,7 @@ package com.example.military_hobbies.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,14 +21,15 @@ public class Follows {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("followerId")
-    @JoinColumn(name = "follower_id")
+    @JoinColumn(name = "follower_id", nullable = false)
     private Users follower;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("followeeId")
-    @JoinColumn(name = "followee_id")
+    @JoinColumn(name = "followee_id", nullable = false)
     private Users followee;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

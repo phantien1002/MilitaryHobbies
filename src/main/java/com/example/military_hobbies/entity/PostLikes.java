@@ -2,6 +2,7 @@ package com.example.military_hobbies.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,15 +20,16 @@ public class PostLikes {
     private PostLikeId id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("postId")
-    @JoinColumn(name = "post_id")
+    @MapsId("postId") // Trùng khớp với 'postId'
+    @JoinColumn(name = "post_id", nullable = false)
     private Posts post;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
+    @MapsId("userId") // Trùng khớp với 'userId'
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

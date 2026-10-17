@@ -29,6 +29,7 @@ public class Categories {
     @JoinColumn(name = "parent_id")
     private Categories parent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "parent")
     private Set<Categories> children = new HashSet<>();
 }

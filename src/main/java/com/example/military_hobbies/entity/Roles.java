@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +22,7 @@ public class Roles {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Builder.Default
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private Set<Users> user = new HashSet<>();
+    private Set<Users> users = new HashSet<>();
 }

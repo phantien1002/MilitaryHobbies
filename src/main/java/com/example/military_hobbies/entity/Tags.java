@@ -22,9 +22,11 @@ public class Tags {
     @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
+    @Builder.Default
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Products> products = new HashSet<>();
 
+    @Builder.Default
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Posts> posts = new HashSet<>();
 }

@@ -3,6 +3,8 @@ package com.example.military_hobbies.entity;
 import com.example.military_hobbies.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,22 +38,26 @@ public class BuildProjects {
     @Column(name = "summary", columnDefinition = "TEXT")
     private String summary;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProjectStatus status = ProjectStatus.PLANNING;
 
-    @Column(name = "started_at", nullable = false)
+    @Column(name = "started_at")
     private LocalDate startedAt;
 
-    @Column(name = "finished_at", nullable = false)
+    @Column(name = "finished_at")
     private LocalDate finishedAt;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false, updatable = false)
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<BuildLogs> logs = new ArrayList<>();
 }

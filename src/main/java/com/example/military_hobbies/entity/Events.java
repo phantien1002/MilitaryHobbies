@@ -2,6 +2,7 @@ package com.example.military_hobbies.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -31,15 +32,16 @@ public class Events {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "start_at", nullable = false, updatable = false)
+    @Column(name = "start_at", nullable = false)
     private LocalDateTime startAt;
 
-    @Column(name = "end_at", nullable = false, updatable = false)
+    @Column(name = "end_at", nullable = false)
     private LocalDateTime endAt;
 
     @Column(name = "max_attendees")
     private Integer maxAttendees;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }

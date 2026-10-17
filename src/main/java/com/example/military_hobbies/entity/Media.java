@@ -4,6 +4,7 @@ import com.example.military_hobbies.enums.MediaType;
 import com.example.military_hobbies.enums.OwnerType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -34,6 +35,7 @@ public class Media {
     @Column(name = "url", nullable = false, length = 500)
     private String url;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "media_type", nullable = false)
     private MediaType mediaType = MediaType.IMAGE;
@@ -41,9 +43,11 @@ public class Media {
     @Column(name = "caption")
     private String caption;
 
+    @Builder.Default
     @Column(name = "sort_order", nullable = false)
     private Short sortOrder = 0;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }

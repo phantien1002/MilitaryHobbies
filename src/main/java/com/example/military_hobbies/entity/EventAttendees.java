@@ -1,11 +1,10 @@
 package com.example.military_hobbies.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.military_hobbies.enums.AttendeeStatus;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,17 +15,35 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "event_attendees")
 public class EventAttendees {
-    @Id
-    @Column(name = "event_id", nullable = false)
-    private String eventId;
+    @EmbeddedId
+    private EventAttendeeId id;
 
-    @Id
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("eventId")
+    @JoinColumn(name = "event_id")
+    private Events event;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AttendeeStatus status = AttendeeStatus.GOING;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Embeddable
+    @Getter @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class EventAttendeeId implements Serializable {
+        @Column(name = "event_id")
+        private Long eventId;
+
+        @Column(name = "user_id")
+        private Long userId;
+    }
 }

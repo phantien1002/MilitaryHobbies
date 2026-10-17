@@ -18,7 +18,7 @@ public class Products {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
@@ -39,17 +39,17 @@ public class Products {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "model_code")
+    @Column(name = "model_code", length = 60)
     private String modelCode;
 
-    @Column(name = "subject_country")
+    @Column(name = "subject_country", length = 2)
     private String subjectCountry;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "release_year")
-    private Integer releaseYear;
+    private Short releaseYear;
 
     @Column(name = "cover_url")
     private String coverUrl;

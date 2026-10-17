@@ -1,5 +1,6 @@
 package com.example.military_hobbies.entity;
 
+import com.example.military_hobbies.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class BuildProjects {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -29,19 +30,20 @@ public class BuildProjects {
     @JoinColumn(name = "collection_item_id")
     private CollectionItems collectionItem;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Column(name = "summary")
+    @Column(name = "summary", columnDefinition = "TEXT")
     private String summary;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProjectStatus status = ProjectStatus.PLANNING;
 
-    @Column(name = "started_at", nullable = false, updatable = false)
+    @Column(name = "started_at", nullable = false)
     private LocalDate startedAt;
 
-    @Column(name = "finished_at", nullable = false, updatable = false)
+    @Column(name = "finished_at", nullable = false)
     private LocalDate finishedAt;
 
     @Column(name = "created_at", nullable = false, updatable = false)

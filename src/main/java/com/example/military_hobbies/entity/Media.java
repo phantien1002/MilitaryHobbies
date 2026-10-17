@@ -1,5 +1,7 @@
 package com.example.military_hobbies.entity;
 
+import com.example.military_hobbies.enums.MediaType;
+import com.example.military_hobbies.enums.OwnerType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,29 +18,31 @@ public class Media {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "owner_type", nullable = false)
-    private String ownerType;
+    private OwnerType ownerType;
 
     @Column(name = "owner_id", nullable = false)
-    private String ownerId;
+    private Long ownerId;
 
-    @Column(name = "url", nullable = false)
+    @Column(name = "url", nullable = false, length = 500)
     private String url;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "media_type", nullable = false)
-    private String mediaType;
+    private MediaType mediaType = MediaType.IMAGE;
 
     @Column(name = "caption")
     private String caption;
 
     @Column(name = "sort_order", nullable = false)
-    private String sortOrder;
+    private Short sortOrder = 0;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

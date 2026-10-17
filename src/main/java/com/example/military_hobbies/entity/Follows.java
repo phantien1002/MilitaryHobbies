@@ -3,77 +3,55 @@ package com.example.military_hobbies.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "follows")
 public class Follows {
-    @Id
-    @Column(name = "follower_id", nullable = false)
-    private Long followerId;
+    @EmbeddedId
+    private FollowId id;
 
-    @Id
-    @Column(name = "followee_id", nullable = false)
-    private Long followeeId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId("followerId")
+    @JoinColumn(name = "follower_id")
+    private Users follower;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId("followeeId")
+    @JoinColumn(name = "followee_id")
+    private Users followee;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(
-            name = "follower_id",
-            insertable = false,
-            updatable = false
-    )
-    private Users follower;
+    public Follows(Users follower, Users followee) {
+        this.follower = follower;
+        this.followee = followee;
+        this.id = new FollowId(follower.getId(), followee.getId());
+        this.createdAt = LocalDateTime.now();
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(
-            name = "followee_id",
-            insertable = false,
-            updatable = false
-    )
-    private Users followee;
-
+    @Embeddable
     @Getter
     @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
     public static class FollowId implements Serializable {
+        @Serial
         private static final long serialVersionUID = 1L;
 
+        @Column(name = "follower_id")
         private Long followerId;
+
+        @Column(name = "followee_id")
         private Long followeeId;
-
-        public FollowId(Long followerId, Long followeeId) {
-            this.followerId = followerId;
-            this.followeeId = followeeId;
-        }
-
-        @Override
-        public boolean equals(Object object) {
-            if (this == object) {
-                return true;
-            }
-
-            if (!(object instanceof FollowId other)) {
-                return false;
-            }
-
-            return Objects.equals(followerId, other.followerId)
-                    && Objects.equals(followeeId, other.followeeId);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(followerId, followeeId);
-        }
     }
 }

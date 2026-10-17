@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,11 +17,14 @@ public class Tags {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Products> products = new HashSet<>();
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private Set<Posts> posts = new HashSet<>();
 }

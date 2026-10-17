@@ -14,25 +14,24 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "build_logs")
 public class BuildLogs {
-
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
-    @Column(name = "project_id", nullable = false)
-    private String projectId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "project_id", nullable = false)
+    private BuildProjects project;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 200)
     private String title;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, columnDefinition = "MEDIUMTEXT")
     private String content;
 
-    @Column(name = "hours_spent")
+    @Column(name = "hours_spent", precision = 5, scale = 2)
     private BigDecimal hoursSpent;
 
-    @Column(name = "logged_at", nullable = false, updatable = false)
+    @Column(name = "logged_at", nullable = false)
     private LocalDateTime loggedAt;
-
 }

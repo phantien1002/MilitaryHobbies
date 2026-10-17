@@ -1,11 +1,10 @@
 package com.example.military_hobbies.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,14 +15,43 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "post_likes")
 public class PostLikes {
-    @Id
-    @Column(name = "post_id", nullable = false)
-    private String postId;
+    @EmbeddedId
+    private PostLikeId id;
 
-    @Id
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId("postId")
+    @JoinColumn(name = "post_id")
+    private Posts post;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
+    private Users user;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    public PostLikes(Posts post, Users user) {
+        this.post = post;
+        this.user = user;
+        this.id = new PostLikeId(post.getId(), user.getId());
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @Embeddable
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class PostLikeId implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 1L;
+
+        @Column(name = "post_id")
+        private Long postId;
+
+        @Column(name = "user_id")
+        private Long userId;
+    }
 }

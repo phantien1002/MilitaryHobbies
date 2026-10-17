@@ -16,15 +16,16 @@ public class Events {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
-    @Column(name = "organizer_id", nullable = false)
-    private String organizerId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "organizer_id", nullable = false)
+    private Users organizer;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "location")
@@ -37,7 +38,7 @@ public class Events {
     private LocalDateTime endAt;
 
     @Column(name = "max_attendees")
-    private String maxAttendees;
+    private Integer maxAttendees;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

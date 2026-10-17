@@ -1,5 +1,7 @@
 package com.example.military_hobbies.entity;
 
+import com.example.military_hobbies.enums.ItemCondition;
+import com.example.military_hobbies.enums.ItemStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +20,7 @@ public class CollectionItems {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "collection_id", nullable = false)
@@ -31,25 +33,27 @@ public class CollectionItems {
     @Column(name = "custom_name")
     private String customName;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ItemStatus status = ItemStatus.UNBUILT;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "item_condition")
-    private String itemCondition;
+    private ItemCondition condition;
 
     @Column(name = "quantity", nullable = false)
-    private String quantity;
+    private Integer quantity;
 
-    @Column(name = "purchase_price")
+    @Column(name = "purchase_price", precision = 12, scale = 2)
     private BigDecimal purchasePrice;
 
     @Column(name = "currency")
     private String currency;
 
-    @Column(name = "purchase_date", nullable = false, updatable = false)
+    @Column(name = "purchase_date")
     private LocalDate purchaseDate;
 
-    @Column(name = "notes")
+    @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
     @Column(name = "created_at", nullable = false, updatable = false)

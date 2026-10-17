@@ -16,11 +16,11 @@ public class Scales {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
-    @Column(name = "label", nullable = false)
+    @Column(name = "label", nullable = false, unique = true, length = 20)
     private String label;
 
-    @Column(name = "ratio")
+    @Column(name = "ratio", precision = 10, scale = 6)
     private BigDecimal ratio;
 }

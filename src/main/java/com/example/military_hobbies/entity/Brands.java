@@ -11,13 +11,12 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "brands")
 public class Brands {
-
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
 
     @Column(name = "country_code")
